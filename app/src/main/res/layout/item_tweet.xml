@@ -36,4 +36,14 @@
         android:layout_toRightOf="@+id/ivProfileImage"
         android:layout_toEndOf="@+id/ivProfileImage"
         android:layout_alignBottom="@+id/ivProfileImage" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/tvTime"
+        android:layout_alignTop="@+id/tvUsername"
+        android:layout_toRightOf="@+id/tvUsername"
+        android:layout_toEndOf="@+id/tvUsername"
+        android:layout_marginLeft="10dp" />
 </RelativeLayout>

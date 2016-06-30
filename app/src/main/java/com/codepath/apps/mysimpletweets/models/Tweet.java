@@ -16,6 +16,7 @@ public class Tweet {
     private String body;
     private String createdAt;
     private User user;
+
     private long uid; //unique ID for the tweet
 
     public String getBody() {
