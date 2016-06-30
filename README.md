@@ -13,7 +13,7 @@ The following **required** functionality is completed:
   * [x] User is displayed the username, name, and body for each tweet
   * [x] User is displayed the [relative timestamp](https://gist.github.com/nesquena/f786232f5ef72f6e10a7) for each tweet "8m", "7h"
 * [ ] User can **compose and post a new tweet**
-  * [ ] User can click a "Compose" icon in the Action Bar on the top right
+  * [x] User can click a "Compose" icon in the Action Bar on the top right
   * [ ] User can then enter a new tweet from a second activity and then post this to twitter
 * [x] User can navigate to **view their own profile**
   * [x] User can see picture, tagline, # of followers, # of following, and tweets on their profile.
