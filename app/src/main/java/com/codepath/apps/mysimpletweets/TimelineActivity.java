@@ -4,21 +4,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.mysimpletweets.fragments.HomeTimelineFragment;
 import com.codepath.apps.mysimpletweets.fragments.MentionsTimelineFragment;
 import com.codepath.apps.mysimpletweets.fragments.TweetsListFragment;
+import com.codepath.apps.mysimpletweets.models.Tweet;
 
 public class TimelineActivity extends AppCompatActivity {
 
     private TweetsListFragment fragmentTweetsList;
+    TweetsPagerAdapter adapterViewPager;
+    ViewPager vpPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,8 @@ public class TimelineActivity extends AppCompatActivity {
         ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
 
         //Set the viewpager adapter for the pager
-        vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
+        adapterViewPager = new TweetsPagerAdapter(getSupportFragmentManager());
+        vpPager.setAdapter(adapterViewPager);
 
         //Find the sliding tabstrip
         PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
@@ -46,7 +48,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        // int id = item.getItemId();
         return super.onOptionsItemSelected(item);
     }
 
@@ -58,7 +60,7 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     //Returns the order of the fragments in the pager adapter
-    public class TweetsPagerAdapter extends FragmentPagerAdapter {
+    public class TweetsPagerAdapter extends SmartFragmentStatePagerAdapter {
         private String tabTitles[] = {"Home", "Mentions"};
 
         //Adapter gets the manager, insert or remove fragments from the activtity
@@ -95,19 +97,25 @@ public class TimelineActivity extends AppCompatActivity {
 
     public void onComposeAction(MenuItem mi) {
         Intent i = new Intent(this, ComposeActivity.class);
-        i.putExtra("mode", 2);
         startActivityForResult(i, REQUEST_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         // REQUEST_CODE is defined above
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+
             // Extract name value from result extras
-            String tweet = data.getExtras().getString("tweet");
-            int code = data.getExtras().getInt("code", 0);
+            Tweet tweet = data.getParcelableExtra("tweet");
+
+            HomeTimelineFragment fragmentHomeTweets =
+                    (HomeTimelineFragment) adapterViewPager.getRegisteredFragment(0);
+            fragmentHomeTweets.appendTweet(tweet);
+            vpPager.setCurrentItem(0);
+
             // Toast the name to display temporarily on screen
-            Toast.makeText(this, tweet, Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, tweet, Toast.LENGTH_SHORT).show();
         }
     }
 }
