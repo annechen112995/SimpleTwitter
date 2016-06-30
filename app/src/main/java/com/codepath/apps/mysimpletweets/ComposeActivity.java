@@ -1,29 +1,30 @@
 package com.codepath.apps.mysimpletweets;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
-import android.view.inputmethod.EditorInfo;
+import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 public class ComposeActivity extends AppCompatActivity {
 
-    EditText etCompose = (EditText) findViewById(R.id.etCompose);
+    // EditText etCompose = (EditText) findViewById(R.id.etCompose);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
+    }
 
-        etCompose.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    String strValue = etCompose.getText().toString();
-                    return true;
-                }
-                return false;
-            }
-        });
+    public void onSubmit(View v) {
+        EditText etCompose = (EditText) findViewById(R.id.etCompose);
+        // Prepare data intent
+        Intent data = new Intent();
+        // Pass relevant data back as a result
+        data.putExtra("tweet", etCompose.getText().toString());
+        data.putExtra("code", 200); // ints work too
+        // Activity finished ok, return the data
+        setResult(RESULT_OK, data); // set result code and bundle data for response
+        finish(); // closes the activity, pass data to parent
     }
 }

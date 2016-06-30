@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.mysimpletweets.fragments.HomeTimelineFragment;
@@ -46,7 +47,6 @@ public class TimelineActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -88,6 +88,26 @@ public class TimelineActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             return tabTitles.length;
+        }
+    }
+
+    private final int REQUEST_CODE = 20;
+
+    public void onComposeAction(MenuItem mi) {
+        Intent i = new Intent(this, ComposeActivity.class);
+        i.putExtra("mode", 2);
+        startActivityForResult(i, REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // REQUEST_CODE is defined above
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            // Extract name value from result extras
+            String tweet = data.getExtras().getString("tweet");
+            int code = data.getExtras().getInt("code", 0);
+            // Toast the name to display temporarily on screen
+            Toast.makeText(this, tweet, Toast.LENGTH_SHORT).show();
         }
     }
 }
