@@ -24,11 +24,12 @@ public class ComposeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        client = TwitterApplication.getRestClient();
         setContentView(R.layout.activity_compose);
     }
 
     public void onSubmit(View v) {
-        final EditText etCompose = (EditText) findViewById(R.id.etCompose);
+        EditText etCompose = (EditText) findViewById(R.id.etCompose);
         final String status = etCompose.getText().toString();
 
         client.getStatusUpdate(status, new JsonHttpResponseHandler() {
