@@ -35,14 +35,15 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         TextView tvUsername;
         TextView tvBody;
         TextView tvTime;
-        //ImageView ivProfileImage;
+        TextView tvName;
+        ImageView ivProfileImage;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         //Get the tweet
-        Tweet tweet = getItem(position);
+        final Tweet tweet = getItem(position);
 
         ViewHolder viewHolder;
 
@@ -52,40 +53,39 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
+            viewHolder.tvName = (TextView) convertView.findViewById(R.id.tvName);
             viewHolder.tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
             viewHolder.tvBody = (TextView) convertView.findViewById(R.id.tvBody);
             viewHolder.tvTime = (TextView) convertView.findViewById(R.id.tvTime);
-            ImageView ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
-
-            final String screenName = tweet.getUser().getScreenName();
-            ivProfileImage.setTag(screenName);
-            ivProfileImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(getContext(), ProfileActivity.class);
-                    i.putExtra("screen_name", screenName);
-                    getContext().startActivity(i);
-
-                }
-            });
-
+            viewHolder.ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
+            viewHolder.ivProfileImage.setTag(tweet.getUser().getScreenName());
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        ImageView ivProfileImage= (ImageView) convertView.findViewById(R.id.ivProfileImage);
 
         //Populate the data into the subviews
+        viewHolder.tvName.setText(tweet.getUser().getName());
         viewHolder.tvUsername.setText("@" + tweet.getUser().getScreenName());
         viewHolder.tvBody.setText(tweet.getBody());
         viewHolder.tvTime.setText(time);
+        viewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(), ProfileActivity.class);
+                String screenName = tweet.getUser().getScreenName();
+                i.putExtra("screen_name",screenName);
+                getContext().startActivity(i);
+
+            }
+        });
 
         //tvBody.setText(tweet.getBody());
-        ivProfileImage.setImageResource(android.R.color.transparent);
+        viewHolder.ivProfileImage.setImageResource(android.R.color.transparent);
 
         //Clears out image for a recycle view
-        Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
+        Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(viewHolder.ivProfileImage);
 
         //Return the view to be returned into the list
         return convertView;

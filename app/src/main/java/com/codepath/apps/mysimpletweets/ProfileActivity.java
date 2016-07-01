@@ -19,6 +19,7 @@ import cz.msebera.android.httpclient.Header;
 public class ProfileActivity extends AppCompatActivity{
     TwitterClient client;
     User user;
+    String screenName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +28,10 @@ public class ProfileActivity extends AppCompatActivity{
         client = TwitterApplication.getRestClient();
 
         //Get the screen name from Timeline Activity
-        String screenName = getIntent().getStringExtra("screen_name");
+        screenName = getIntent().getStringExtra("screen_name");
         if (savedInstanceState == null) {
 
-            newUser(screenName);
+            newUser();
 
             //Create the user timeline fragment
             UserTimelineFragment fragmentUserTimeline = UserTimelineFragment.newInstance(screenName);
@@ -42,7 +43,7 @@ public class ProfileActivity extends AppCompatActivity{
         }
     }
 
-    public void newUser(final String screenName) {
+    public void newUser() {
         if (screenName != null && !screenName.isEmpty()) {
 
             client.getNewUserInfo(screenName, new JsonHttpResponseHandler() {
@@ -72,16 +73,17 @@ public class ProfileActivity extends AppCompatActivity{
         }
     }
 
-
     private void populateProfileHeader(User user) {
         //Current user's account info
-        TextView tvName = (TextView) findViewById(R.id.tvFullName);
+        //TextView tvName = (TextView) findViewById(R.id.tvName);
+        TextView tvFullName = (TextView) findViewById(R.id.tvFullName);
         TextView tvTagline = (TextView) findViewById(R.id.tvTagline);
         TextView tvFollowers = (TextView) findViewById(R.id.tvFollowers);
         TextView tvFollowing = (TextView) findViewById(R.id.tvFollowing);
         ImageView ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
 
-        tvName.setText(user.getName());
+        //tvName.setText(user.getName());
+        tvFullName.setText(user.getName());
         tvTagline.setText(user.getTagline());
 
         tvFollowers.setText(user.getFollowersCount()+ " Followers");
