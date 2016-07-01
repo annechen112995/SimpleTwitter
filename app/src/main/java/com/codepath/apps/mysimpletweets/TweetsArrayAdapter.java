@@ -1,6 +1,7 @@
 package com.codepath.apps.mysimpletweets;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,20 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             viewHolder.tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
             viewHolder.tvBody = (TextView) convertView.findViewById(R.id.tvBody);
             viewHolder.tvTime = (TextView) convertView.findViewById(R.id.tvTime);
-            //viewHolder.ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
+            ImageView ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
+
+            final String screenName = tweet.getUser().getScreenName();
+            ivProfileImage.setTag(screenName);
+            ivProfileImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(getContext(), ProfileActivity.class);
+                    i.putExtra("screen_name", screenName);
+                    getContext().startActivity(i);
+
+                }
+            });
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -63,7 +77,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         ImageView ivProfileImage= (ImageView) convertView.findViewById(R.id.ivProfileImage);
 
         //Populate the data into the subviews
-        viewHolder.tvUsername.setText(tweet.getUser().getScreenName());
+        viewHolder.tvUsername.setText("@" + tweet.getUser().getScreenName());
         viewHolder.tvBody.setText(tweet.getBody());
         viewHolder.tvTime.setText(time);
 

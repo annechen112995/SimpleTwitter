@@ -12,13 +12,12 @@ import android.view.MenuItem;
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.mysimpletweets.fragments.HomeTimelineFragment;
 import com.codepath.apps.mysimpletweets.fragments.MentionsTimelineFragment;
-import com.codepath.apps.mysimpletweets.fragments.TweetsListFragment;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 
 public class TimelineActivity extends AppCompatActivity {
 
-    private TweetsListFragment fragmentTweetsList;
-    TweetsPagerAdapter adapterViewPager;
+    // private TweetsListFragment fragmentTweetsList;
+    SmartFragmentStatePagerAdapter adapterViewPager;
     ViewPager vpPager;
 
     @Override
@@ -27,7 +26,7 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
 
         //Get the viewpager
-        ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
+        vpPager = (ViewPager) findViewById(R.id.viewpager);
 
         //Set the viewpager adapter for the pager
         adapterViewPager = new TweetsPagerAdapter(getSupportFragmentManager());

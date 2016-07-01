@@ -2,6 +2,7 @@ package com.codepath.apps.mysimpletweets;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -30,7 +31,7 @@ public class ComposeActivity extends AppCompatActivity {
 
     public void onSubmit(View v) {
         EditText etCompose = (EditText) findViewById(R.id.etCompose);
-        final String status = etCompose.getText().toString();
+        String status = etCompose.getText().toString();
 
         client.getStatusUpdate(status, new JsonHttpResponseHandler() {
             @Override
@@ -39,7 +40,7 @@ public class ComposeActivity extends AppCompatActivity {
                 Intent data = new Intent();
 
                 // Pass relevant data back as a result
-                data.putExtra("status", status);
+                data.putExtra("tweet", (Parcelable) newTweet);
 
                 // Activity finished ok, return the data
                 setResult(RESULT_OK, data); // set result code and bundle data for response
